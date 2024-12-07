@@ -1,0 +1,5 @@
+package com.zzt.netty.annotation;
+
+public @interface RemoteInvoke {
+
+}

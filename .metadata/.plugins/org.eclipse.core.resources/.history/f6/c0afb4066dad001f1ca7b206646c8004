@@ -1,0 +1,5 @@
+package com.zzt.user.remote;
+
+public class UserRemote {
+
+}

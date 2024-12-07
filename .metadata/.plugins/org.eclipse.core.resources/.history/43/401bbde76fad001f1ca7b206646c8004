@@ -1,0 +1,5 @@
+package com.zzt.pro_netty_rpc;
+
+public class RemoteInvokingTest {
+
+}

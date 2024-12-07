@@ -1,0 +1,53 @@
+package com.zzt.client.core;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+
+import io.netty.channel.ChannelFuture;
+import redis.clients.jedis.Jedis;
+
+public class ChannelManager {
+
+	static Set<String> realServerPath = new HashSet<>();
+    public static CopyOnWriteArrayList<ChannelFuture> channelFutures = new CopyOnWriteArrayList<>();
+
+    private static Jedis jedis = new Jedis("localhost", 6379);
+    
+    static {
+        // 确保计数器初始值
+        if (jedis.get("position") == null) {
+            jedis.set("position", "0"); // 初始化计数器
+        }
+    }
+
+    public static void removeChannel(ChannelFuture channel) {
+        channelFutures.remove(channel);
+    }
+
+    public static void addChannel(ChannelFuture channel) {
+        channelFutures.add(channel);
+    }
+
+    public static void clear() {
+        channelFutures.clear();
+        jedis.set("position", "0"); // 重置计数器
+    }
+
+    public static ChannelFuture get() {
+        ChannelFuture channelFuture = null;
+        int size = channelFutures.size();
+        int position = Integer.parseInt(jedis.get("position")); // 从 Redis 获取计数器
+
+        if (position >= size) {
+            channelFuture = channelFutures.get(0);
+            jedis.set("position", "1"); // 重置计数器
+        } else {
+            channelFuture = channelFutures.get(position);
+            jedis.set("position", String.valueOf(position + 1)); // 递增计数器
+        }
+
+        return channelFuture;
+    }
+}

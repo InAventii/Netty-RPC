@@ -1,0 +1,25 @@
+package com.zzt.pro_basic.controller;
+
+import com.zzt.server.AnnotationConfigApplicationContext;
+import com.zzt.server.ApplicationContext;
+import com.zzt.server.ComponentScan;
+import com.zzt.server.Configuration;
+import com.zzt.server.SpringServer;
+
+
+@Configuration
+@ComponentScan("com.zzt")
+public class BasicController {
+	
+
+	public class SpringServer {
+	    public static void main(String[] args) throws InterruptedException {
+	        ApplicationContext context = 
+	            new AnnotationConfigApplicationContext(SpringServer.class);
+	        //context.wait();
+	    }
+	}
+
+
+
+}
